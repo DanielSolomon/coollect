@@ -1,28 +1,28 @@
 stages:
   - test
   - deploy
+language: python
 python:
   - '3.6'
   - '3.7'
   - '3.8'
   - '3.9'
+install:
+  - python -m pip install -r requirements.txt -r requirements-test.txt
+  - pip install coveralls
+script:
+  - coverage run --source=coollect -m pytest tests/
+after_success:
+  - coveralls
 jobs:
   include:
-    - stage: test
-      language: python
-      install:
-        - python -m pip install -r requirements.txt -r requirements-test.txt
-        - pip install coveralls
-      script:
-        - coverage run --source=coollect -m pytest tests/
-      after_success:
-        - coveralls
     - stage: deploy
-      provider: pypi
       language: python
       python: '3.9'
-      username: "__token__"
-      password: 
-        secure: Mc4LXecYglqZTZOpaPEjRMsPYtJi1Ebt185L7XTKOEVWYl6rcNeFDlnQFC7K6VE5ifK5cqrGm2SL0Xjcy4bQUhKuq1qkqJAGZUjy/oz4aPCG2MQLNrllzxh5wOeAFa3Cy0bfdCuypO9ac/Z69OhlIw6BUhxeYrzbdE/2uwdioR5XTL8F/ziUruZ8R8u23RxbEJv8ZmmoCN+nuviIV9vS6BPgUCNzh58X0Zr/T/jwry4wIU3NnF7a5ve/tUlhAW3CQpr77tEkbaY4/8DTDUQy/bJlODRsDmNO9Gnb7O4f3H1+4Ixrc4ypdczdbHY+KK3VXl22iJJ0s+pP7V69yYLMQhpVH21BrkncQpMfdx3y/rVV7bihlN/8UKm+bNpcUy7YquWOZJYdIfaoqoo7nDkHtLIal8TMmIWeRW015wpkL4iXMf6uOX31nlHZ9+HHirppFl0zm5jWRahSTjlOlZKozkNszg9/E3zGuIR4+x6g6w1/03N4eG905+8btlSEVjAGP8G3LTD8xGwP91YuNFBiK2XjYKVk5r1lu/Jb5vnDd1xaNR06COHbqByoGFr2i6jVsMrXGyGZY4H10OiWOsUOEWa0LfrMUDGcvVkpfEBxGlAnkazvwh4H2h3l1u3MXDamxQ4Y0y+660LUykNd63XQKVc3VkWZF4moVtCTxOt/Gbg=
-      on:
-        tags: true
+      deploy:
+        provider: pypi
+        username: "__token__"
+        password: 
+          secure: Mc4LXecYglqZTZOpaPEjRMsPYtJi1Ebt185L7XTKOEVWYl6rcNeFDlnQFC7K6VE5ifK5cqrGm2SL0Xjcy4bQUhKuq1qkqJAGZUjy/oz4aPCG2MQLNrllzxh5wOeAFa3Cy0bfdCuypO9ac/Z69OhlIw6BUhxeYrzbdE/2uwdioR5XTL8F/ziUruZ8R8u23RxbEJv8ZmmoCN+nuviIV9vS6BPgUCNzh58X0Zr/T/jwry4wIU3NnF7a5ve/tUlhAW3CQpr77tEkbaY4/8DTDUQy/bJlODRsDmNO9Gnb7O4f3H1+4Ixrc4ypdczdbHY+KK3VXl22iJJ0s+pP7V69yYLMQhpVH21BrkncQpMfdx3y/rVV7bihlN/8UKm+bNpcUy7YquWOZJYdIfaoqoo7nDkHtLIal8TMmIWeRW015wpkL4iXMf6uOX31nlHZ9+HHirppFl0zm5jWRahSTjlOlZKozkNszg9/E3zGuIR4+x6g6w1/03N4eG905+8btlSEVjAGP8G3LTD8xGwP91YuNFBiK2XjYKVk5r1lu/Jb5vnDd1xaNR06COHbqByoGFr2i6jVsMrXGyGZY4H10OiWOsUOEWa0LfrMUDGcvVkpfEBxGlAnkazvwh4H2h3l1u3MXDamxQ4Y0y+660LUykNd63XQKVc3VkWZF4moVtCTxOt/Gbg=
+        on:
+          tags: true
