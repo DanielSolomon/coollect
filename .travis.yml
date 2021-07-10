@@ -6,5 +6,8 @@ python:
   - '3.9'
 install:
   - python -m pip install -r requirements.txt -r requirements-test.txt
+  - pip install coveralls
 script:
-  - python -m pytest tests/ --cov coollect --cov-report html:coverage
+  - coverage run --source=coollect -m pytest tests/
+after_success:
+  - coveralls
